@@ -39,7 +39,14 @@ class Board extends React.Component {
   }
 
   render() {
-    const status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+		const winner = determineWinner(this.state.squares);
+    let status;
+		if(winner) {
+			status = 'Winner : ' + winner;
+		}
+		else {
+			status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+		}
 
     return (
       <div>
@@ -78,6 +85,26 @@ class Game extends React.Component {
       </div>
     );
   }
+}
+
+function determineWinner(squares) {
+	const lines = [
+		[0, 1, 2],
+		[3, 4, 5],
+		[6, 7, 8],
+		[0, 3, 6],
+		[1, 4, 7],
+		[2, 5, 8],
+		[0, 4, 8],
+		[2, 4, 6]
+	];
+	for(let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
+		const [a, b, c] = lines[lineIndex];
+		if(squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+			return squares[a];
+		}
+	}
+	return null;
 }
 
 // ========================================
